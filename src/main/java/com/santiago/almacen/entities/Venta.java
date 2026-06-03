@@ -1,0 +1,52 @@
+package com.santiago.almacen.entities;
+
+
+import com.santiago.almacen.enums.EstadoVenta;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
+@Entity
+@Table(name = "VENTAS")
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Getter @Setter
+public class Venta {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    @Column(name = "ESTADO", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private EstadoVenta estadoVenta;
+
+    @Column(name = "ESTADO", nullable = false)
+    private LocalDate fecha;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "SUCURSAL", nullable = false)
+    private Sucursal sucursal;
+
+    @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL,
+            orphanRemoval = true, fetch = FetchType.LAZY)
+    private List<DetalleVenta> detalleVenta = new ArrayList<>();
+
+    public void agregarDetalle(DetalleVenta detalleVenta){
+        if (detalleVenta == null)
+            throw  new IllegalStateException("El detalle es requerido");
+        this.detalleVenta.add(detalleVenta);
+        detalleVenta.setVenta(this);
+    }
+
+    public void cancelar() {
+
+        if (this.estadoVenta == EstadoVenta.CANCELADA)
+            throw new IllegalStateException("La venta ya fue cancelada");
+
+        this.estadoVenta = EstadoVenta.CANCELADA;
+    }
+}
