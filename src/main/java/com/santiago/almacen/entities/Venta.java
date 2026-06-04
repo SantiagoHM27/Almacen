@@ -18,6 +18,7 @@ import java.util.List;
 public class Venta {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ID_VENTA")
     private long id;
 
     @Column(name = "ESTADO", nullable = false)
@@ -28,7 +29,7 @@ public class Venta {
     private LocalDate fecha;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "SUCURSAL", nullable = false)
+    @JoinColumn(name = "ID_SUCURSAL", nullable = false)
     private Sucursal sucursal;
 
     @OneToMany(mappedBy = "venta", cascade = CascadeType.ALL,

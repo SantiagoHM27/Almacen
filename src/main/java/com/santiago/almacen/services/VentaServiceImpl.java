@@ -45,7 +45,7 @@ public class VentaServiceImpl implements VentaService {
     @Transactional(readOnly = true)
     public VentaResponse obtenerPorId(Long id) {
         log.info("Buscando la venta registrada con el id: {}", id);
-        Venta venta = ventaRepository.findIdAndEstadoVenta(id, EstadoVenta.REGISTRADA)
+        Venta venta = ventaRepository.findByIdAndEstadoVenta(id, EstadoVenta.REGISTRADA)
                 .orElseThrow(() -> new RecursoNoEncontradoException(
                         "Venta registrada no encontrada con el id: "+id));
         return ventaMapper.entidadAResponse(venta);
@@ -86,7 +86,7 @@ public class VentaServiceImpl implements VentaService {
     public void cancelar(Long id) {
         log.info("Cancelando venta con id:  {}", id);
 
-        Venta venta = ventaRepository.findIdAndEstadoVenta(id, EstadoVenta.REGISTRADA)
+        Venta venta = ventaRepository.findByIdAndEstadoVenta(id, EstadoVenta.REGISTRADA)
                 .orElseThrow(()  -> new RecursoNoEncontradoException(
                         "Venta registrada no encontrada con id: " + id));
         venta.getDetalleVenta().forEach(detalle ->
