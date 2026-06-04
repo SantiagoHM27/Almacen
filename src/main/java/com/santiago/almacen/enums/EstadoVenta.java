@@ -5,8 +5,6 @@ import com.santiago.almacen.utils.StringCustomUtils;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import java.util.Objects;
-
 @RequiredArgsConstructor
 @Getter
 public enum EstadoVenta {
@@ -17,21 +15,21 @@ public enum EstadoVenta {
     private final String descripcion;
     private final Long codigo;
 
-    public static EstadoVenta obtenerCategoriaPorDescripcion(String descripcion) {
-        StringCustomUtils.validarNoVacio(descripcion, "La dexcripcion es requerida");
-        String descripcionNormalizada = StringCustomUtils.quitarAcentos(descripcion.trim());
-        for (EstadoVenta estadoVenta : values()) {
-            if (StringCustomUtils.quitarAcentos(estadoVenta.descripcion).equalsIgnoreCase(descripcionNormalizada))
-                return estadoVenta;
-
+    public static EstadoVenta obtenerPorDescripcion(String descripcion) {
+        StringCustomUtils.validarNoVacio(descripcion, "La descripcion es requerida");
+        String normalizada = StringCustomUtils.quitarAcentos(descripcion.trim());
+        for (EstadoVenta estado : values()) {
+            if (StringCustomUtils.quitarAcentos(estado.descripcion).equalsIgnoreCase(normalizada))
+                return estado;
         }
-        throw  new RecursoNoEncontradoException("No existe una categoria con la descripcion:" + descripcion);
+        throw new RecursoNoEncontradoException("No existe un estado con la descripcion: " + descripcion);
     }
 
-    public static EstadoVenta obtenerEstadoVentaPorCodigo(Long codigo) {
-        for (EstadoVenta estadoVenta : values()) {
-            return estadoVenta;
+    public static EstadoVenta obtenerPorCodigo(Long codigo) {
+        for (EstadoVenta estado : values()) {
+            if (estado.codigo.equals(codigo))
+                return estado;
         }
-
-        throw new RecursoNoEncontradoException("No existe un estado de venta con el codigo" +codigo);
-    } }
+        throw new RecursoNoEncontradoException("No existe un estado con el codigo: " + codigo);
+    }
+}

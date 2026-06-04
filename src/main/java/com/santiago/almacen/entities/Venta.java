@@ -24,7 +24,7 @@ public class Venta {
     @Enumerated(EnumType.STRING)
     private EstadoVenta estadoVenta;
 
-    @Column(name = "ESTADO", nullable = false)
+    @Column(name = "FECHA", nullable = false)
     private LocalDate fecha;
 
     @ManyToOne(fetch = FetchType.LAZY)
