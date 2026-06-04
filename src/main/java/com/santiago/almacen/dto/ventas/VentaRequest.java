@@ -15,4 +15,4 @@ public record VentaRequest(
 
         @NotEmpty(message = "La lista de los productos es requerida y no debe de estar vacia")
         List<@Valid DetalleVentaRequest> productos
-) {}
+) { }
