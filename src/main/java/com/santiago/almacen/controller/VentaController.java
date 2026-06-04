@@ -23,13 +23,22 @@ public class VentaController {
     public ResponseEntity<List<VentaResponse>> listar() {
         return ResponseEntity.ok(ventaService.listar());
     }
-    @PostMapping
-    public ResponseEntity.ok<ventaService> registrar(@Valid @RequestBody VentaRequest request){
-        return ResponseEntity.status((HttpStatus.CREATED).body(ventaService.registrar(request)));
+
+    @PostMapping("/{id}")
+    public ResponseEntity<VentaResponse> obtenerPorId(@PathVariable Long id){
+        return ResponseEntity.ok(ventaService.obtenerPorId(id));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<void>
+    public ResponseEntity<Void> cancelar(@PathVariable Long id){
+        ventaService.cancelar(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/canceladas")
+    public ResponseEntity<List<VentaResponse>> listarCanceladas(){
+        return ResponseEntity.ok(ventaService.listarCanceladas());
+    }
 
 
 

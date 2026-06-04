@@ -8,4 +8,5 @@ public record DetalleVentaResponse(
    Integer cantidadProducto,
    BigDecimal precioProducto,
    BigDecimal subtotal
+
 ) {}
