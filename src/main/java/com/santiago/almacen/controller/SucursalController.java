@@ -13,11 +13,11 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping
+@RequestMapping("/sucursales")
 @AllArgsConstructor
 public class SucursalController {
     private  final SucursalService sucursalService;
-
+    @GetMapping
     public ResponseEntity<List<SucursalResponse>> listar(){
         return ResponseEntity.ok(sucursalService.listar());
     }
