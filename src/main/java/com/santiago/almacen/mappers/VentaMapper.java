@@ -22,9 +22,10 @@ public class VentaMapper {
                 .map(this::detalleAResponse)
                 .toList();
 
-        BigDecimal total = detalles.stream()
-                .map(DetalleVentaResponse::subtotal)
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        BigDecimal total = BigDecimal.ZERO;
+        for (DetalleVentaResponse detalleDto : detalles) {
+            total = total.add(detalleDto.subtotal());
+        }
 
         return new VentaResponse(
                 venta.getId(),
