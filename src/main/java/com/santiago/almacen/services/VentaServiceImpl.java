@@ -1,6 +1,7 @@
 package com.santiago.almacen.services;
 
 
+import com.santiago.almacen.dto.ventas.DetalleVentaRequest;
 import com.santiago.almacen.dto.ventas.VentaRequest;
 import com.santiago.almacen.dto.ventas.VentaResponse;
 import com.santiago.almacen.entities.DetalleVenta;
@@ -37,7 +38,7 @@ public class VentaServiceImpl implements VentaService {
     @Transactional(readOnly = true)
     public List<VentaResponse> listar() {
         log.info("listando todas las ventas registradas");
-        return ventaRepository.findByEstadoVenta( EstadoVenta.REGISTRADA)
+        return ventaRepository.findByEstadoVenta(EstadoVenta.REGISTRADA)
                 .stream().map(ventaMapper::entidadAResponse).toList();
     }
 
@@ -62,9 +63,10 @@ public class VentaServiceImpl implements VentaService {
                 .estadoVenta(EstadoVenta.REGISTRADA)
                 .fecha(LocalDate.now())
                 .sucursal(sucursal)
+
                 .build();
 
-        request.productos().forEach(detalleReq -> {
+        for (DetalleVentaRequest detalleReq : request.productos()) {
             Producto producto = productoRepository.findById(detalleReq.idProducto())
                     .orElseThrow(() -> new RecursoNoEncontradoException(
                             "Producto no encontrado con id: " + detalleReq.idProducto()));
@@ -76,7 +78,7 @@ public class VentaServiceImpl implements VentaService {
                     .precioProducto(producto.getPrecio())
                     .build();
             venta.agregarDetalle(detalle);
-        });
+        }
         Venta ventaGuardada = ventaRepository.save(venta);
         log.info("Venta {} registrada exitosamente", ventaGuardada.getId());
         return ventaMapper.entidadAResponse(ventaGuardada);
